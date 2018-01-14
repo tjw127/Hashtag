@@ -7,3 +7,4 @@
 /build
 /captures
 .externalNativeBuild
+app/src/main/java/co/uglytruth/hashtag/enum/CredentialsEnum.kt
