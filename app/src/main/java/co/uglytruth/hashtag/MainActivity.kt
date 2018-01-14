@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import co.uglytruth.hashtag.endpoint.Endpoint
+import co.uglytruth.hashtag.hashtag.HashtagRetrofitRequest
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,9 +18,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        var url = Endpoint.Builder().baseUrl().hashtag().key().build()
+        //var url = Endpoint.Builder().baseUrl().hashtag().key().build()
 
-        Log.v("URL", url.url)
+        var request:HashtagRetrofitRequest = HashtagRetrofitRequest()
+
+        request.callHastagData()
+
+        //Log.v("URL", url.url)
 
         //print(url.url)
         fab.setOnClickListener { view ->
