@@ -26,28 +26,55 @@ class MainActivity : AppCompatActivity() {
 
         //var url = Endpoint.Builder().baseUrl().hashtag().key().build()
 
+
+
+//
+//        fab.setOnClickListener { view ->
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show()
+//        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadHastag()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+    }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    private fun loadHastag()
+    {
         val request:HashtagRetrofitRequest = HashtagRetrofitRequest()
 
         //hashtagList = request.callHastagData(result = hashtagList)
 
         Log.v("HashtagList1", hashtagList.toString())
 
-        val adapter:HashtagAdapter = HashtagAdapter(list = hashtagList)
+        //val adapter:HashtagAdapter = HashtagAdapter(list = hashtagList, context = this)
 
         val recyclerView:RecyclerView = this.findViewById(R.id.hashtagRecyclerView)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(false)
 
-        request.callHastagData(recyclerView)
-
-        //Log.v("URL", url.url)
-
-        //print(url.url)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        request.callHastagData(recyclerView = recyclerView, context = this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -60,9 +87,20 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_reload -> consume { loadHastag() }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    inline fun consume (f: () -> Unit): Boolean {
+
+        f()
+        return true
+
+    }
+
+
 }

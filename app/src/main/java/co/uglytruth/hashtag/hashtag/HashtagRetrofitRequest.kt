@@ -1,5 +1,6 @@
 package co.uglytruth.hashtag.hashtag
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import co.uglytruth.hashtag.adapter.HashtagAdapter
@@ -19,7 +20,7 @@ import kotlin.concurrent.thread
 
 class HashtagRetrofitRequest{
 
-    fun callHastagData(recyclerView:RecyclerView){
+    fun callHastagData(recyclerView:RecyclerView, context: Context){
 
 
         val retrofit: Retrofit = Retrofit.Builder()
@@ -43,7 +44,7 @@ class HashtagRetrofitRequest{
                     val result:ArrayList<Hashtag>? = ArrayList<Hashtag>()
                     result?.addAll(hashtagResponse!!)
 
-                    var adapter:HashtagAdapter = HashtagAdapter(result)
+                    var adapter:HashtagAdapter = HashtagAdapter(result, context)
 
                     recyclerView.adapter = adapter
 
