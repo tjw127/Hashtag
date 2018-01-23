@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "890234565938",
+    "firebase_url": "https://hashtag-ac65e.firebaseio.com",
+    "project_id": "hashtag-ac65e",
+    "storage_bucket": "hashtag-ac65e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890234565938:android:2630f8591aa00f78",
+        "android_client_info": {
+          "package_name": "co.uglytruth.hashtag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890234565938-io1395f3k9vp5stsn9rhnn38oh4k592t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEqHfrIMV1E42if5pAyqTLXctsYpd_O5A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

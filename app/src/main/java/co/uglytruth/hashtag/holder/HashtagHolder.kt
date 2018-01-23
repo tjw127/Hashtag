@@ -14,4 +14,7 @@ class HashtagHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 
             val editText:EditText = itemView.findViewById(R.id.hashtagText)
             val clipButton: Button = itemView.findViewById(R.id.bookmark)
+            val share: Button = itemView.findViewById(R.id.instagramshare)
+            val facebook_share: Button = itemView.findViewById(R.id.facebookshare)
+            val twitter_share: Button = itemView.findViewById(R.id.twittershare)
 }

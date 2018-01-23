@@ -8,4 +8,6 @@
         android:icon="@android:drawable/stat_notify_sync_noanim"
         android:title="@string/action_settings"
         app:showAsAction="always" />
+
+
 </menu>

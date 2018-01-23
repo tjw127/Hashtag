@@ -39,17 +39,16 @@
                 android:id="@+id/hashtagText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="15dp"
-                android:paddingBottom="30dp"
-                android:paddingRight="15dp"
-                android:paddingLeft="15dp"
-                android:focusable="false"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginBottom="0dp"
                 android:background="@android:drawable/screen_background_light_transparent"
                 android:ems="10"
-                android:inputType="textMultiLine" />
+                android:focusable="false"
+                android:inputType="textMultiLine"
+                android:paddingBottom="60dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="15dp" />
 
             <Button
                 android:id="@+id/bookmark"
@@ -62,6 +61,38 @@
 
                 android:background="@mipmap/ic_bookmark_border_black_24dp"
                 android:backgroundTint="#cd486b" />
+
+            <Button
+                android:id="@+id/facebookshare"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/bookmark"
+                android:layout_marginStart="48dp"
+                android:background="@drawable/facebook"
+                android:backgroundTint="#3b5998"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/instagramshare"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/bookmark"
+                android:layout_marginStart="10dp"
+                android:background="?attr/actionModeShareDrawable"
+                android:backgroundTint="#cd486b" />
+
+            <Button
+                android:id="@+id/twittershare"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignTop="@+id/bookmark"
+                android:layout_marginStart="33dp"
+                android:layout_toEndOf="@+id/instagramshare"
+                android:background="@drawable/twitter"
+                android:backgroundTint="#0084b4"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
