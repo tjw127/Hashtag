@@ -18,29 +18,29 @@ import co.uglytruth.hashtag.holder.HashtagHolder
  */
 class HashtagAdapter(var list:ArrayList<Hashtag>?, var context: Context):RecyclerView.Adapter<HashtagHolder>(){
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): HashtagHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HashtagHolder {
 
-           val v = LayoutInflater.from(parent?.context).inflate(R.layout.hashtag_adapter_layout, parent, false)
+           val v = LayoutInflater.from(parent.context).inflate(R.layout.hashtag_adapter_layout, parent, false)
 
             return HashtagHolder(v)
         }
-        override fun onBindViewHolder(holder: HashtagHolder?, position: Int) {
+        override fun onBindViewHolder(holder: HashtagHolder, position: Int) {
 
 
 
-            holder?.editText?.setText(list!![position].hastag_list)
+            holder.editText.setText(list!![position].hastag_list)
 
-            holder?.facebook_share?.setOnClickListener(View.OnClickListener {
-
-
-            })
-
-            holder?.twitter_share?.setOnClickListener(View.OnClickListener {
+            holder.facebook_share.setOnClickListener(View.OnClickListener {
 
 
             })
 
-            holder?.share?.setOnClickListener(View.OnClickListener {
+            holder.twitter_share.setOnClickListener(View.OnClickListener {
+
+
+            })
+
+            holder.share.setOnClickListener(View.OnClickListener {
 
                 val intent = Intent(android.content.Intent.ACTION_SEND)
                 intent.type = "text/plain"
@@ -50,9 +50,9 @@ class HashtagAdapter(var list:ArrayList<Hashtag>?, var context: Context):Recycle
                 context.startActivity(Intent.createChooser(intent, "Choose Sharing Option"))
             })
 
-            val clipButton = holder?.clipButton
+            val clipButton = holder.clipButton
 
-            clipButton?.setOnClickListener(View.OnClickListener {
+            clipButton.setOnClickListener(View.OnClickListener {
 
                 clipButton.setBackgroundResource(R.mipmap.ic_bookmark_black_24dp)
 

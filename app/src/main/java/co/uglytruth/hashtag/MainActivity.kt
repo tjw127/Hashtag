@@ -30,20 +30,39 @@ import com.mopub.mobileads.MoPubInterstitial
 import com.mopub.mobileads.MoPubView
 import io.fabric.sdk.android.Fabric
 import android.app.Application
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageInfo
+import android.preference.PreferenceManager
+import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.widget.Toolbar
+import android.util.Base64
 import com.google.android.gms.analytics.GoogleAnalytics
 import co.uglytruth.hashtag.analytics.KAnalyticsApplication
 import co.uglytruth.hashtag.enum.CredentialsEnum
+import co.uglytruth.hashtag.twitter.TwitterRequest
+import co.uglytruth.hashtag.twitter.TwitterRetrofitRequest
+import co.uglytruth.hashtag.twitter.TwitterStatuses
+import co.uglytruth.hashtag.twitter.rest.TWTweets
+import co.uglytruth.hashtag.twitter.rest.gson.TWTweetsGson
+import co.uglytruth.hashtag.yahoo.Yahoo
 import com.google.android.gms.analytics.HitBuilders
 import com.google.android.gms.analytics.Tracker
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.security.MessageDigest
 import java.util.*
+import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInterstitial.InterstitialAdListener, NavigationView.OnNavigationItemSelectedListener  {
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-       return true
-    }
+class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInterstitial.InterstitialAdListener  {
+
+
 
     override fun onInterstitialLoaded(interstitial: MoPubInterstitial?) {
     }
@@ -88,30 +107,82 @@ class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInter
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        //var url = Endpoint.Builder().baseUrl().hashtag().key().build()
+        /*
+        try {
+
+            PackageInfo info =
+getPackageManager().getPackageInfo("your package name",
+PackageManager.GET_SIGNATURES);
+
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("MY KEY HASH:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+         */
+
+        try{
+            val info:PackageInfo = packageManager.getPackageInfo("co.uglytruth.hashtag", PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures){
+                val md:MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.v("My Key Hash: ", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            }
+
+        }catch (e: Exception){
+
+           Log.v("My Key Hash", e.localizedMessage)
+        }
 
 
 
-        analyticsApplication = application as KAnalyticsApplication?
-        sTracker = GoogleAnalytics.getInstance(this).newTracker(CredentialsEnum.GoogleAnalytics.value)
-        sTracker?.enableAutoActivityTracking(true)
-        sendActivityAnalytics()
-
-
-        createDialog()
-//        firebase()
-        turnOnLocation()
+//        val tw = TwitterRetrofitRequest()
+//        tw.callTwitterAccessToken(this)
 
 
 
+//        val tw = TwitterRequest()
+//        tw.callAccessToken(context = this)
 
+//        val yahoo = Yahoo()
+//        yahoo.getLocation("Atlanta GA", this)
+
+//        val sharedPreferences:SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 //
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
+//        val shared:String = sharedPreferences.getString("TwitterJSON", "No Data")
+//
+//
+//        val gsonTw:TWTweetsGson = TWTweetsGson()
+//        val statuses:TwitterStatuses = gsonTw.parseData(shared)
+//
+//        var s:Int = 0
+//        for (status in statuses.statuses)
+//        {
+//            Log.v("TwitterJSON", "" + statuses.statuses.get(s).entities.hashtags.count())
+//            s += 1
 //        }
+
+//        val editor:SharedPreferences.Editor = sharedPreferences.edit()
+
+
+        loadHastag()
+
+
+//        val twtweets:TWTweets = TWTweets()
+
+//        val q = hashMapOf<String, String>("q" to "tech")
+//        twtweets.search(q = q, context = this, locale = null, geocode = null, lang = null, result_type = null, count = null, since_id = null, max_id = null, include_entities = null, until = null)
+//
+
+
     }
 
     fun firebase(){
@@ -136,39 +207,38 @@ class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInter
 
     fun getMoPub(){
 
-        mopubView = findViewById(R.id.adview)
+
+        mopubView = findViewById(R.id.adview1)
         mopubView?.adUnitId = CredentialsEnum.MoPubViewAdUnit.value
         mopubView?.bannerAdListener = this
         mopubView?.loadAd()
 
-       interstitial = MoPubInterstitial(this, CredentialsEnum.MoPubInterstitial.value)
-       interstitial?.interstitialAdListener = this
-       interstitial?.load()
+//       interstitial = MoPubInterstitial(this, CredentialsEnum.MoPubInterstitial.value)
+//       interstitial?.interstitialAdListener = this
+//       interstitial?.load()
     }
 
 
-    fun turnOnLocation(){
 
-        if (((ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) != PackageManager.PERMISSION_GRANTED) && ((ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED)){
-
-            val list = arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-            ActivityCompat.requestPermissions(this, list, 1)
-
-
-
-        }
-    }
 
     override fun onStart() {
         super.onStart()
 
+//        try {
+//
+//            loadHastag()
+//
+//        }catch(e: Exception){
+//
+//            e.printStackTrace()
+//        }
+
         try {
 
-            loadHastag()
+            getMoPub()
 
-        }catch(e: Exception){
-
+        }catch (e:Exception)
+        {
             e.printStackTrace()
         }
 
@@ -182,7 +252,7 @@ class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInter
     override fun onResume() {
         super.onResume()
         sendActivityAnalytics()
-        getMoPub()
+//        getMoPub()
 
     }
 
@@ -237,18 +307,36 @@ class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInter
 
     private fun loadHastag()
     {
-        val request:HashtagRetrofitRequest = HashtagRetrofitRequest()
+//        val request:HashtagRetrofitRequest = HashtagRetrofitRequest()
 
 
-        Log.v("HashtagList1", hashtagList.toString())
+
 
 
         val recyclerView:RecyclerView = findViewById(R.id.hashtagRecyclerView)
-
+//
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(false)
 
-        request.callHastagData(recyclerView = recyclerView, context = this)
+
+        val hastag:String = CredentialsEnum.Hashtag.value
+
+        val gson: Gson = GsonBuilder().create()
+
+        Log.v("HashtagList12", hastag)
+
+        val type = object: TypeToken<ArrayList<Hashtag>>(){}.type
+
+        val hastagList  = gson.fromJson<ArrayList<Hashtag>>(hastag, type)
+
+        Log.v("HashtagList1", " " + hastagList[0])
+//
+        var adapter:HashtagAdapter = HashtagAdapter(hastagList, this)
+//
+        recyclerView.adapter = adapter
+
+
+//        request.callHastagData(recyclerView = recyclerView, context = this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -266,7 +354,7 @@ class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInter
             R.id.action_reload -> consume {
 
                 progressBar?.visibility = View.VISIBLE
-                loadHastag()
+//                loadHastag()
                 timer()
                 }
 
@@ -278,6 +366,13 @@ class MainActivity : AppCompatActivity(), MoPubView.BannerAdListener, MoPubInter
 
         f()
         return true
+
+    }
+
+    override fun onBackPressed() {
+
+            super.onBackPressed()
+
 
     }
 
